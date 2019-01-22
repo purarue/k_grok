@@ -116,13 +116,15 @@ vboxmanage modifyvm $VMNAME --uartmode1 file /tmp/k_grok-serial.log
 # Start VM
 vboxmanage startvm $VMNAME
 
-# End of phases
-# password osboxes.org
+# The password for the osboxes login in 'osboxes.org'
+# On the VM:
 # start a terminal (either right click or search using the first panel button)
-# sudo -i
-# password osboxes.org
-# apt update
-# apt upgrade
+# run the following commands:
+# sudo -i (password osboxes.org)
+# you may want to change the password, since this password is known to everyone:
+# passwd
+# passwd osboxes
+# apt update && apt upgrade
 # apt install openssh-server git
 #
 # ssh osboxes@$(arp -a | perl -ne '/\((.*)\) .*[0-9a-f] on vboxnet0 ifscope \[ethernet\]/ && print $1')
