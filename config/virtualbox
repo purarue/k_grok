@@ -86,11 +86,18 @@ export HOST_INTERFACE_NAME="vboxnet0"
 # vboxmanage list hostonlyifs
 # You can grep the name out like so:
 # vboxmanage list hostonlyifs | grep "Name:" | head -n 1
-# Note if vboxmanage hostonlyif create is not commented out,
+# Note if "vboxmanage hostonlyif create" is not commented out,
 # after you've created a Host-Interface Network this will
 # continue to successive Host-Interface networks each time this
 # script is run.
 vboxmanage hostonlyif create
+# By default 'vboxmanage hostonlyif create' will create 'vboxnet0' or 'VirtualBox Host-Only Ethernet Adapter'
+# on the first call, then 'vboxnet1' or 'VirtualBox Host-Only Ethernet Adapter #2' on the next, etc.
+# If it is not vboxnet# by default, you can delete it by typing: VBoxManage remove <NETWORKNAME>
+# It being named "VirtualBox Host-Only Ethernet Adapter" is fine as well,
+# just make sure you put the name in quotes in $HOST_INTERFACE_NAME above.
+# More info can be found here https://www.virtualbox.org/manual/ch08.html
+# Assuming vboxnet1 was created
 vboxmanage dhcpserver add --ifname "$HOST_INTERFACE_NAME" --ip 192.168.56.2 --netmask 255.255.255.0 --lowerip 192.168.56.3 --upperip 192.168.56.254 --enable
 
 # For more info about these instructions, see:
