@@ -131,16 +131,26 @@ vboxmanage modifyvm $VMNAME --uartmode1 file /tmp/k_grok-serial.log
 # Start VM
 vboxmanage startvm $VMNAME
 
-# End of phases
-# password osboxes.org
+# The password for the osboxes login in 'osboxes.org'
+# On the VM:
 # start a terminal (either right click or search using the first panel button)
-# sudo -i
-# password osboxes.org
-# apt update
-# apt upgrade
+# run the following commands:
+# sudo -i (password osboxes.org)
+# you may want to change the password, since this password is known to everyone:
+# passwd
+# passwd osboxes
+# apt update && apt upgrade
 # apt install openssh-server git
-#
-# ssh osboxes@$(arp -a | perl -ne '/\((.*)\) .*[0-9a-f] on "$HOST_INTERFACE_NAME" ifscope \[ethernet\]/ && print $1')
+# start the sshserver by doing:
+# sudo /etc/init.d/ssh start
+# or 
+# sudo service ssh start
+# use this command to get the IP address of the VM on the Host-Interface Network:
+# ifconfig | grep -A2 enp0 | grep 192
+# It's the first ip address on that line
+
+# Leave the VM open, and on your local machine run:
+# ssh osboxes@ip_address (replace ip address with the ip you just grepped on the VM above)
 # mkdir ~/src
 # cd ~/src
 # git clone https://github.com/agshew/k_grok.git
