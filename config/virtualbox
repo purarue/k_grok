@@ -61,7 +61,7 @@
 # ssh from your host to your VM as user osboxes to the IP address you just grepped
 
 # script installation:
-# You can either clone the directory:
+# You can either clone the repository:
 # git clone https://github.com/seanbreckenridge/k_grok
 # git clone https://github.com/carlosmalt/k_grok
 # Change to the config directory:
