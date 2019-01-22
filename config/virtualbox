@@ -128,7 +128,7 @@ vboxmanage dhcpserver add --ifname "$HOST_INTERFACE_NAME" --ip 192.168.56.2 --ne
 
 # Note: If you've run this script multiple times, and the script reached past
 # the VM creation phase, the script is going to fail, because its already
-# generated a Machine Settings file that maches the $VMNAME.
+# generated a Machine Settings file that matches the $VMNAME.
 # You can reset these settings by removing the VM:
 # List all VMs:
 # vboxmanage list vms
