@@ -70,7 +70,7 @@ export VM_DISK_DIR=$HOME/vm_disks
 # it in $HOME/vm_disks, move it out of the folder it comes
 # extracted in.
 export VDI="$VM_DISK_DIR/Ubuntu*\(64bit\).vdi"
-export VMNAME=k_grok
+export VMNAME=k_grok-group1
 # determine your host's primary network adapter ...
 # this may work on Linux
 export HOST_ADAPTER=$(ip link show up | grep "<BROAD" | cut -f2 -d":")
