@@ -66,19 +66,32 @@
 
 # Variable Init phase
 export VM_DISK_DIR=$HOME/vm_disks
-export VDI="$VM_DISK_DIR/Ubuntu 16.10 Yakkety (64bit).vdi"
+# Assumes the .vdi file is in $HOME/vm_disks. If you extracted
+# it in $HOME/vm_disks, move it out of the folder it comes
+# extracted in.
+export VDI="$VM_DISK_DIR/Ubuntu*(64bit).vdi"
 export VMNAME=k_grok
 # determine your host's primary network adapter ...
 # this may work on Linux
 export HOST_ADAPTER=$(ip link show up | grep "<BROAD" | cut -f2 -d":")
 # this may work on Mac OS X
 export HOST_ADAPTER=$(ifconfig | grep -B4 "status: active" | grep -B3 "inet " | head -1 | cut -f1 -d":")
+# Don't assume the name of the Host-Interface Network (hostonlyif) network
+# since it may differ on different operating systems
+export HOST_INTERFACE_NAME="vboxnet0"
 
 # Host configuration phase
 # On your host:
+# You can list the Host-Interface networks on your system by running:
+# vboxmanage list hostonlyifs
+# You can grep the name out like so:
+# vboxmanage list hostonlyifs | grep "Name:" | head -n 1
+# Note if vboxmanage hostonlyif create is not commented out,
+# after you've created a Host-Interface Network this will
+# continue to successive Host-Interface networks each time this
+# script is run.
 vboxmanage hostonlyif create
-# Assuming vboxnet1 was created
-vboxmanage dhcpserver add --ifname vboxnet1 --ip 192.168.56.2 --netmask 255.255.255.0 --lowerip 192.168.56.3 --upperip 192.168.56.254 --enable
+vboxmanage dhcpserver add --ifname "$HOST_INTERFACE_NAME" --ip 192.168.56.2 --netmask 255.255.255.0 --lowerip 192.168.56.3 --upperip 192.168.56.254 --enable
 
 # For more info about these instructions, see:
 # https://www.virtualbox.org/manual/ch08.html
@@ -98,7 +111,7 @@ vboxmanage storageattach $VMNAME --storagectl SATA --port 0 --device 0 --type hd
 # VM network config phase
 vboxmanage modifyvm $VMNAME --nic1 nat --nictype1 virtio
 vboxmanage modifyvm $VMNAME --nic2 hostonly --nictype2 82540EM
-vboxmanage modifyvm $VMNAME --hostonlyadapter2 vboxnet1
+vboxmanage modifyvm $VMNAME --hostonlyadapter2 "$HOST_INTERFACE_NAME"
 
 # VM console config phase (optional)
 # send serial console to a log file
@@ -120,7 +133,7 @@ vboxmanage startvm $VMNAME
 # apt upgrade
 # apt install openssh-server git
 #
-# ssh osboxes@$(arp -a | perl -ne '/\((.*)\) .*[0-9a-f] on vboxnet0 ifscope \[ethernet\]/ && print $1')
+# ssh osboxes@$(arp -a | perl -ne '/\((.*)\) .*[0-9a-f] on "$HOST_INTERFACE_NAME" ifscope \[ethernet\]/ && print $1')
 # mkdir ~/src
 # cd ~/src
 # git clone https://github.com/agshew/k_grok.git
