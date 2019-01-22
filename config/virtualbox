@@ -93,7 +93,7 @@ export HOST_INTERFACE_NAME="vboxnet0"
 vboxmanage hostonlyif create
 # By default 'vboxmanage hostonlyif create' will create 'vboxnet0' or 'VirtualBox Host-Only Ethernet Adapter'
 # on the first call, then 'vboxnet1' or 'VirtualBox Host-Only Ethernet Adapter #2' on the next, etc.
-# If it is not vboxnet# by default, you can delete it by typing: VBoxManage remove <NETWORKNAME>
+# If it is not vboxnet# by default, you can delete it by typing: VBoxManage hostonlyif remove <NETWORKNAME>
 # It being named "VirtualBox Host-Only Ethernet Adapter" is fine as well,
 # just make sure you put the name in quotes in $HOST_INTERFACE_NAME above.
 # More info can be found here https://www.virtualbox.org/manual/ch08.html
