@@ -60,6 +60,22 @@
 
 # ssh from your host to your VM as user osboxes to the IP address you just grepped
 
+# script installation:
+# You can either clone the directory:
+# git clone https://github.com/seanbreckenridge/k_grok
+# git clone https://github.com/carlosmalt/k_grok
+# Change to the config directory:
+# cd k_grok/config
+# Change the permissions on the virtualbox script to make it executable
+# chmod +x ./virtualbox
+# Run the script:
+# bash -c ./virtualbox
+
+# You could also curl the script directly:
+# curl https://raw.githubusercontent.com/seanbreckenridge/k_grok/group1/config/virtualbox > virtualbox
+# and then chmod, and run:
+# chmod +x ./virtualbox && bash -c ./virtualbox
+
 # Assuming you have downloaded a compressed osbox image into $VMDIR,
 # and then uncompressed it with a command such as the following:
 # p7zip -d Ubuntu_16.10_Yakkety-VB-64bit.7z
@@ -73,8 +89,10 @@ export VM_DISK_DIR=$HOME/vm_disks
 export VDI="$VM_DISK_DIR/Ubuntu 16.04.5 (64bit).vdi"
 export VMNAME=k_grok-group1
 # determine your host's primary network adapter ...
+# if you are on Linux, uncomment the line below that sets
+# HOST_ADAPTER, and comment the mac os x line out.
 # this may work on Linux
-export HOST_ADAPTER=$(ip link show up | grep "<BROAD" | cut -f2 -d":")
+# export HOST_ADAPTER=$(ip link show up | grep "<BROAD" | cut -f2 -d":")
 # this may work on Mac OS X
 export HOST_ADAPTER=$(ifconfig | grep -B4 "status: active" | grep -B3 "inet " | head -1 | cut -f1 -d":")
 # Don't assume the name of the Host-Interface Network (hostonlyif) network
@@ -98,6 +116,8 @@ vboxmanage hostonlyif create
 # It being named "VirtualBox Host-Only Ethernet Adapter" is fine as well,
 # just make sure you put the name in quotes in $HOST_INTERFACE_NAME above.
 # More info can be found here https://www.virtualbox.org/manual/ch08.html
+
+# Configure DHCP server
 vboxmanage dhcpserver add --ifname "$HOST_INTERFACE_NAME" --ip 192.168.56.2 --netmask 255.255.255.0 --lowerip 192.168.56.3 --upperip 192.168.56.254 --enable
 
 # For more info about these instructions, see:
@@ -105,6 +125,17 @@ vboxmanage dhcpserver add --ifname "$HOST_INTERFACE_NAME" --ip 192.168.56.2 --ne
 # http://www.howopensource.com/2011/06/how-to-use-virtualbox-in-terminal-commandline/
 # http://www.edwardstafford.com/2009/09/13/virtualbox-and-bridged-networking-on-a-headless-ubuntu-server-host/
 # http://serverfault.com/questions/128685/how-can-i-get-the-bridged-ip-address-of-a-virtualbox-vm-running-in-headless-mode
+
+# Note: If you've run this script multiple times, and the script reached past
+# the VM creation phase, the script is going to fail, because its already
+# generated a Machine Settings file that maches the $VMNAME.
+# You can reset these settings by removing the VM:
+# List all VMs:
+# vboxmanage list vms
+# Delete the one that was misconfigured
+# vboxmanage unregistervm <VMNAME | VMID> -delete
+# Then, make sure the Ubuntu....(64bit).vdi file is in $VM_DISK_DIR
+# and run the script again.
 
 # VM creation phase
 vboxmanage createvm --name $VMNAME --register
@@ -140,17 +171,25 @@ vboxmanage startvm $VMNAME
 # passwd
 # passwd osboxes
 # apt update && apt upgrade
+# If you get an error saying "unable to lock the administration directory",
+# that means another process on your computer is currently using
+# apt. You can use 'ps aux | grep apt' to find those processes and kill them,
+# or wait till they finish updating your system
+# Look here for more information: https://askubuntu.com/questions/15433
 # apt install openssh-server git
 # start the sshserver by doing:
 # sudo /etc/init.d/ssh start
 # or 
 # sudo service ssh start
+# Boot into non-graphical mode by default:
+# ln -sf /lib/systemd/system/multi-user.target /etc/systemd/system/default.target 
 # use this command to get the IP address of the VM on the Host-Interface Network:
 # ifconfig | grep -A2 enp0 | grep 192
 # It's the first ip address on that line
 
 # Leave the VM open, and on your local machine run:
 # ssh osboxes@ip_address (replace ip address with the ip you just grepped on the VM above)
+# Testing:
 # mkdir ~/src
 # cd ~/src
 # git clone https://github.com/agshew/k_grok.git
