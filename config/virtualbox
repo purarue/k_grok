@@ -69,7 +69,8 @@ export VM_DISK_DIR=$HOME/vm_disks
 # Assumes the .vdi file is in $HOME/vm_disks. If you extracted
 # it in $HOME/vm_disks, move it out of the folder it comes
 # extracted in.
-export VDI="$VM_DISK_DIR/Ubuntu*\(64bit\).vdi"
+# **If this does not match the name of your file in $HOME/vm_disks, change it here.**
+export VDI="$VM_DISK_DIR/Ubuntu 16.04.5 (64bit).vdi"
 export VMNAME=k_grok-group1
 # determine your host's primary network adapter ...
 # this may work on Linux
