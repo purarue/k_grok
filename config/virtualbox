@@ -62,7 +62,7 @@
 
 # script installation:
 # You can either clone the repository:
-# git clone https://github.com/seanbreckenridge/k_grok; cd k_grok; git checkout -b group1 origin/group1
+# git clone https://github.com/purarue/k_grok; cd k_grok; git checkout -b group1 origin/group1
 # git clone https://github.com/carlosmalt/k_grok
 # Change to the config directory:
 # cd k_grok/config
@@ -72,7 +72,7 @@
 # bash -c ./virtualbox
 
 # You could also curl the script directly:
-# curl https://raw.githubusercontent.com/seanbreckenridge/k_grok/group1/config/virtualbox > virtualbox
+# curl https://raw.githubusercontent.com/purarue/k_grok/group1/config/virtualbox > virtualbox
 # and then chmod, and run:
 # chmod +x ./virtualbox && bash -c ./virtualbox
 
